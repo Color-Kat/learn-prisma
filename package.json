@@ -2,17 +2,21 @@
   "name": "learn-prisma",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "script": "nodemon src/script.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
     "next": "14.0.4",
+    "nodemon": "^3.0.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^20",

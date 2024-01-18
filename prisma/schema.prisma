@@ -6,22 +6,54 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String?
-  created_at  DateTime
+model User {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+  age   Int
+  role  Role   @default(BASIC)
 
-  // Relationships
-  comments Comment[]
+  writtenPosts   Post[]          @relation("WrittenPosts")
+  favoritePosts  Post[]          @relation("FavoritePosts")
+  userPreference UserPreference?
+
+  @@index([email])
 }
 
-model Comment {
-  id     Int   @id @default(autoincrement())
-  postId Int?
-  post   Post? @relation(fields: [postId], references: [id])
+model UserPreference {
+  id        String  @id @default(uuid())
+  emailNews Boolean
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @unique
+}
+
+model Post {
+  id            Int    @id @default(autoincrement())
+  title         String
+  text          String
+  avarageRating Float
+
+  author        User       @relation("WrittenPosts", fields: [authorId], references: [id])
+  authorId      String
+  favoritedBy   User       @relation("FavoritePosts", fields: [favoritedById], references: [id])
+  favoritedById String
+  Categorues    Category[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  posts Post[]
+}
+
+enum Role {
+  BASIC
+  ADMIN
 }

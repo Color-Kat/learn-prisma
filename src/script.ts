@@ -8,7 +8,16 @@ async function main() {
         data: {
             name: "ColorKat",
             email: "coco@co.co",
-            age: 18
+            age: 18,
+            userPreference: {
+                create: {
+                    emailNews: true
+                }
+            }
+        },
+        select: {
+            name: true,
+            userPreference: { select: { emailNews: true } }
         }
     });
 

@@ -17,9 +17,10 @@ model User {
   age   Int
   role  Role   @default(BASIC)
 
-  writtenPosts   Post[]          @relation("WrittenPosts")
-  favoritePosts  Post[]          @relation("FavoritePosts")
-  userPreference UserPreference?
+  writtenPosts     Post[]          @relation("WrittenPosts")
+  favoritePosts    Post[]          @relation("FavoritePosts")
+  userPreference   UserPreference? @relation(fields: [userPreferenceId], references: [id])
+  userPreferenceId String?         @unique
 
   @@index([email])
 }
@@ -27,8 +28,7 @@ model User {
 model UserPreference {
   id        String  @id @default(uuid())
   emailNews Boolean
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String  @unique
+  user      User?
 }
 
 model Post {
